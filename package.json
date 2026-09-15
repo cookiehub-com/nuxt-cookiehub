@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^4.5.2",
-    "cookiehub-js": "file:../cookiehub-js/cookiehub-js-1.0.0.tgz",
+    "cookiehub-js": "^1.0.0",
     "defu": "^6.1.4"
   },
   "devDependencies": {
