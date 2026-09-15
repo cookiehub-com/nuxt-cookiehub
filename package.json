@@ -1,0 +1,79 @@
+{
+  "name": "nuxt-cookiehub",
+  "version": "1.0.0",
+  "description": "Nuxt module for the CookieHub consent platform: loads the consent dialog from nuxt.config, exposes a useCookieHub composable, and provides consent-blocked script components.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cookiehub-com/nuxt-cookiehub.git"
+  },
+  "homepage": "https://github.com/cookiehub-com/nuxt-cookiehub#readme",
+  "bugs": {
+    "url": "https://github.com/cookiehub-com/nuxt-cookiehub/issues"
+  },
+  "keywords": [
+    "nuxt",
+    "nuxt-module",
+    "cookiehub",
+    "cookie-consent",
+    "cookie-banner",
+    "consent-management",
+    "cmp",
+    "gdpr",
+    "ccpa",
+    "privacy"
+  ],
+  "author": "CookieHub",
+  "license": "ISC",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
+    }
+  },
+  "main": "./dist/module.mjs",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "workspaces": [
+    "playground"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build build",
+    "dev": "npm run dev:prepare && nuxt dev playground",
+    "dev:build": "nuxt build playground",
+    "dev:generate": "nuxt generate playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxt prepare playground",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^4.5.2",
+    "cookiehub-js": "file:../cookiehub-js/cookiehub-js-1.0.0.tgz",
+    "defu": "^6.1.4"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^3.4.2",
+    "@nuxt/eslint-config": "^1.17.0",
+    "@nuxt/module-builder": "^1.0.3",
+    "@nuxt/schema": "^4.5.2",
+    "@nuxt/test-utils": "^4.3.2",
+    "@types/node": "latest",
+    "changelogen": "^0.6.2",
+    "eslint": "^10.10.0",
+    "nuxt": "^4.5.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11",
+    "vue-tsc": "^3.3.11"
+  }
+}
