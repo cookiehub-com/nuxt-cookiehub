@@ -191,6 +191,8 @@ Nothing in this module touches `window` or `document` on the server. The loader 
 
 ## Contribution
 
+Node 24 is used in CI (`24.21.0`); `.npmrc` sets `legacy-peer-deps=true`.
+
 <details>
   <summary>Local development</summary>
 
@@ -213,14 +215,46 @@ Nothing in this module touches `window` or `document` on the server. The loader 
   # Run Vitest
   npm run test
   npm run test:watch
-
-  # Release new version
-  npm run release
   ```
 
   The playground uses a placeholder domain id that fails to load on purpose, so the actionable error path is visible. Set `COOKIEHUB_DOMAIN_ID` to a real domain code to see the live dialog.
 
 </details>
+
+<details>
+  <summary>Releasing</summary>
+
+  **Do not run `npm run release` as it stands.** That script lints, tests, builds, runs
+  `changelogen --release` (which bumps the version, commits and tags locally), runs `npm publish`
+  and then `git push --follow-tags`, which pushes the release commit straight to `main`. `main` is
+  protected (pull request, required checks, linear history), so the push is rejected, and by then the
+  package is already on npm with no matching commit on `main`.
+
+  What works today, manually from a developer machine:
+
+  1. Bump the version in `package.json` in a pull request to `main` and merge it after review.
+  2. Check out the merged commit, then run `npm run lint && npm run test && npm run prepack`.
+  3. Run `npm publish`. The npm version is whatever `package.json` says.
+
+  There is no release workflow, no GitHub Release and no approval gate for this package. Bringing it
+  under the same model as the other repos (a `v*` release on `main`, approved on a `production`
+  environment) is tracked in IS-134, and this procedure should be replaced when that is decided.
+
+  **Linear.** Each publish is mirrored in the **nuxt-cookiehub** release pipeline in Linear: keep a
+  Planned release for the next version and attach issues as their PRs merge; open a release issue from
+  the Linear **Release** template (title `Release nuxt-cookiehub <version>`) and attach it to the
+  release; write the release note on the Linear release, customer-facing first; once the package is on
+  npm, move the release to Released and create the next Planned release. The full procedure is in
+  docs-internal, Runbooks, Branching and Releases.
+
+</details>
+
+## Linear
+
+Work is tracked in Linear (team Product & Engineering, prefix `CH`). The shared rules (an issue
+before non-trivial work, status at each touch point, labels) are in the Linear document
+"Working in CookieHub's Linear with an LLM" (P&E team, Home). Put the issue id in the branch name and
+the PR title so it auto-links.
 
 ## License
 
